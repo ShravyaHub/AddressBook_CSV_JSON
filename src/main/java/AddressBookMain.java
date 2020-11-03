@@ -24,7 +24,9 @@ public class AddressBookMain {
                     "10.Add address book to file\n" +
                     "11.Read address book from file" +
                     "12.Add address book to CSV file\n" +
-                    "13.Read address book from CSV file");
+                    "13.Read address book from CSV file\n" +
+                    "14.Add address book to JSON file\n" +
+                    "15.Read address book from JSON file");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -80,6 +82,14 @@ public class AddressBookMain {
 
                 case 13:
                     addressBookManager.readContactsFromCSVFile(addressBookName);
+                    break;
+
+                case 14:
+                    addressBookManager.createPerson(addressBookName);
+                    break;
+
+                case 15:
+                    addressBookManager.readFromJSONFile(addressBookName);
                     break;
 
                 default:
