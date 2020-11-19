@@ -29,6 +29,11 @@ public class AddressBookServiceDatabase {
         return getAddressBookDataUsingDatabase(sql);
     }
 
+    public List<PersonData> readData(String condition, String value) throws AddressBookException {
+        String sql = String.format("SELECT * FROM Person WHERE %s = '%s';", condition, value);
+        return getAddressBookDataUsingDatabase(sql);
+    }
+
     private List<PersonData> getAddressBookDataUsingDatabase(String sql) throws AddressBookException {
         List<PersonData> addressBookData = new ArrayList();
         try(Connection connection= this.getConnection()) {

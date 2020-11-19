@@ -13,6 +13,14 @@ public class AddressBookService {
         }
     }
 
+    public List<PersonData> readData(String condition, String value) throws AddressBookException {
+        try {
+            return new AddressBookServiceDatabase().readData(condition, value);
+        } catch (AddressBookException addressBookException) {
+            throw new AddressBookException("Cannot execute query", AddressBookException.ExceptionType.CANNOT_EXECUTE_QUERY);
+        }
+    }
+
     public void updateContactAddress(String name, String address) throws AddressBookException {
         readData();
         int result = new AddressBookServiceDatabase().updateAddressBookData(name, address);
