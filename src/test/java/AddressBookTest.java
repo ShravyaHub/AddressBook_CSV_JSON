@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class AddressBookTest {
@@ -19,6 +20,15 @@ public class AddressBookTest {
         addressBookService.updateContactAddress("Sudha", "Jayanagar");
         boolean result = addressBookService.checkAddressBookInSyncWithDatabase("Sudha");
         Assert.assertTrue(result);
+    }
+
+    @Test
+    public void givenAddressBookData_ShouldReturnNumberOfContactsWithinDateRange() throws AddressBookException {
+        AddressBookService addressBookService = new AddressBookService();
+        LocalDate start = LocalDate.of(2020, 03, 01);
+        LocalDate end = LocalDate.of(2020, 04, 30);
+        List<PersonData> addressBookData = addressBookService.readAddressBookData(start, end);
+        Assert.assertEquals(2, addressBookData.size());
     }
 
 }
