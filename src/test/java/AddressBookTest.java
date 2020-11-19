@@ -31,4 +31,16 @@ public class AddressBookTest {
         Assert.assertEquals(2, addressBookData.size());
     }
 
+    @Test
+    public void givenAddressBookData_ShouldReturnNumberOfContactsInCity() throws AddressBookException {
+        AddressBookService addressBookService = new AddressBookService();
+        Assert.assertEquals(2, addressBookService.readData("City", "Bangalore").size());
+    }
+
+    @Test
+    public void givenAddressBookData_ShouldReturnNumberOfContactsInState() throws AddressBookException {
+        AddressBookService addressBookService = new AddressBookService();
+        Assert.assertEquals(1, addressBookService.readData("State", "AP").size());
+    }
+
 }
