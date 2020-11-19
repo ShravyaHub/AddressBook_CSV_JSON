@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,11 @@ public class AddressBookServiceDatabase {
 
     public List<PersonData> readData() throws AddressBookException {
         String sql = "SELECT * FROM Person";
+        return getAddressBookDataUsingDatabase(sql);
+    }
+
+    public List<PersonData> readData(LocalDate start, LocalDate end) throws AddressBookException {
+        String sql = String.format("SELECT * FROM Person WHERE AddDate BETWEEN '%s' AND '%s';", Date.valueOf(start), Date.valueOf(end));
         return getAddressBookDataUsingDatabase(sql);
     }
 

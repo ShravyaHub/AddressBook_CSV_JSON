@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 
 public class AddressBookService {
@@ -31,6 +32,14 @@ public class AddressBookService {
         try {
             List<PersonData> addressBookData = new  AddressBookServiceDatabase().getAddressBookData(name);
             return addressBookData.get(0).equals(getAddressBookData(name));
+        } catch (AddressBookException addressBookException) {
+            throw new AddressBookException("Cannot execute query", AddressBookException.ExceptionType.CANNOT_EXECUTE_QUERY);
+        }
+    }
+
+    public List<PersonData> readAddressBookData(LocalDate start, LocalDate end) throws AddressBookException {
+        try {
+            return new AddressBookServiceDatabase().readData(start, end);
         } catch (AddressBookException addressBookException) {
             throw new AddressBookException("Cannot execute query", AddressBookException.ExceptionType.CANNOT_EXECUTE_QUERY);
         }
