@@ -53,4 +53,8 @@ public class AddressBookService {
         }
     }
 
+    public void addNewContact(String firstName, String lastName, String address, String city, String state, int zip, long phoneNumber, String email) throws AddressBookException {
+        addressBookData.add(new AddressBookServiceDatabase().addNewContact(firstName, lastName, address, city, state, zip, phoneNumber, email));
+    }
+
 }

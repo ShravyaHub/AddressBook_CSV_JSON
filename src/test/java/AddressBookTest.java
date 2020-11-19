@@ -43,4 +43,13 @@ public class AddressBookTest {
         Assert.assertEquals(1, addressBookService.readData("State", "AP").size());
     }
 
+    @Test
+    public void givenNewContact_WhenAdded_ShouldSyncWithDatabase() throws AddressBookException {
+        AddressBookService addressBookService = new AddressBookService();
+        addressBookService.readData();
+        addressBookService.addNewContact("Harika", "M", "J P Nagar", "Bangalore", "KA", 560091, 969572255, "harika@gmail.com");
+        boolean result = addressBookService.checkAddressBookInSyncWithDatabase("Harika");
+        Assert.assertTrue(result);
+    }
+
 }

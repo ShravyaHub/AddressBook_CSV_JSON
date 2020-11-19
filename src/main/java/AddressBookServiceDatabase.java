@@ -98,4 +98,23 @@ public class AddressBookServiceDatabase {
             throw new AddressBookException(sqlException.getMessage(), AddressBookException.ExceptionType.CANNOT_EXECUTE_QUERY);
         }
     }
+
+    public PersonData addNewContact(String firstName, String lastName, String address, String city, String state, int zip, long phoneNumber, String email) throws AddressBookException {
+        int personID = -1;
+        PersonData personData = null;
+        String sql = String.format("INSERT INTO Person(FirstName, LastName, Address, City, State, Zip, PhoneNumber, Email) VALUES ('%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s')", firstName, lastName, address, city, state, zip, phoneNumber, email);
+        try(Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
+            if(rowAffected == 1) {
+                ResultSet resultSet = statement.getGeneratedKeys();
+                if(resultSet.next()) personID = resultSet.getInt(1);
+            }
+            personData = new PersonData(personID, firstName, lastName, address, city, state, zip, phoneNumber, email);
+        } catch (SQLException sqlException) {
+            throw new AddressBookException(sqlException.getMessage(), AddressBookException.ExceptionType.CANNOT_EXECUTE_QUERY);
+        }
+        return personData;
+    }
+
 }
