@@ -1,14 +1,14 @@
 import java.util.Comparator;
 
-public class SortByName implements Comparator<Person> {
+public class SortByName implements Comparator<Contact> {
 
     @Override
-    public int compare(Person person1, Person person2) {
+    public int compare(Contact contact1, Contact contact2) {
 
-        if((person1.firstName).compareTo(person2.firstName) == 0)
-            return (person1.lastName).compareTo(person2.lastName);
+        if((contact1.firstName).compareTo(contact2.firstName) == 0)
+            return (contact1.lastName).compareTo(contact2.lastName);
         else
-            return (person1.firstName).compareTo(person2.firstName);
+            return (contact1.firstName).compareTo(contact2.firstName);
 
     }
 
