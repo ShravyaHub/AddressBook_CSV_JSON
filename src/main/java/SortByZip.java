@@ -1,11 +1,11 @@
 import java.util.Comparator;
 
-public class SortByZip implements Comparator<Person> {
+public class SortByZip implements Comparator<Contact> {
 
     @Override
-    public int compare(Person person1, Person person2) {
+    public int compare(Contact contact1, Contact contact2) {
 
-        return (person1.zip).compareTo(person2.zip);
+        return (contact1.zip).compareTo(contact2.zip);
 
     }
 

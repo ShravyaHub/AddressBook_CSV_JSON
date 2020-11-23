@@ -12,13 +12,13 @@ public class AddressBookManager implements IAddressBook{
 
     String firstName, lastName, address, city, state, zip, phoneNumber;
     Scanner scanner = new Scanner(System.in);
-    ArrayList<Person> contacts = new ArrayList<>();
-    Person person;
+    ArrayList<Contact> contacts = new ArrayList<>();
+    Contact contact;
     boolean personExists;
     int choice;
-    HashMap<Person, String> cityPersonMap = new HashMap<>();
-    HashMap<Person, String> statePersonMap = new HashMap<>();
-    Set<Person> keys = new HashSet<>();
+    HashMap<Contact, String> cityPersonMap = new HashMap<>();
+    HashMap<Contact, String> statePersonMap = new HashMap<>();
+    Set<Contact> keys = new HashSet<>();
 
     @Override
     public void createPerson(String addressBookName) {
@@ -38,19 +38,19 @@ public class AddressBookManager implements IAddressBook{
         System.out.println("Enter phone number: ");
         phoneNumber = scanner.nextLine();
         if(contacts.size() > 0)
-            for (Person contact : contacts) {
-                person = contact;
-                if (firstName.equals(person.firstName) && lastName.equals(person.lastName)) {
-                    System.out.println("Contact " + person.firstName + " " + person.lastName + " already exists");
+            for (Contact contact : contacts) {
+                this.contact = contact;
+                if (firstName.equals(this.contact.firstName) && lastName.equals(this.contact.lastName)) {
+                    System.out.println("Contact " + this.contact.firstName + " " + this.contact.lastName + " already exists");
                     personExists = true;
                     break;
                 }
             }
         if(!personExists) {
-            person = new Person(firstName, lastName, address, city, state, zip, phoneNumber);
-            contacts.add(person);
-            cityPersonMap.put(person, city);
-            statePersonMap.put(person, state);
+            contact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber);
+            contacts.add(contact);
+            cityPersonMap.put(contact, city);
+            statePersonMap.put(contact, state);
             addAddressBookToFile(firstName, lastName, address, city, state, phoneNumber, zip, addressBookName);
             try {
                 addContactsToCSVFile(addressBookName);
@@ -62,7 +62,7 @@ public class AddressBookManager implements IAddressBook{
             } catch (IOException ioException) {
                 ioException.getMessage();
             }
-            System.out.println("Contact added: " + person.firstName + " " + person.lastName);
+            System.out.println("Contact added: " + contact.firstName + " " + contact.lastName);
         }
     }
 
@@ -107,8 +107,8 @@ public class AddressBookManager implements IAddressBook{
         firstName = scanner.nextLine();
         System.out.println("Enter last name: ");
         lastName = scanner.nextLine();
-        for (Person person : contacts)
-            if (firstName.equals(person.firstName) && lastName.equals(person.lastName)) {
+        for (Contact contact : contacts)
+            if (firstName.equals(contact.firstName) && lastName.equals(contact.lastName)) {
                 personExists = true;
                 System.out.println("Edit:\n 1.Address\n 2.City\n 3.State\n 4.Zip\n 5.Phone number ");
                 choice = scanner.nextInt();
@@ -117,31 +117,31 @@ public class AddressBookManager implements IAddressBook{
                     case 1 -> {
                         System.out.println("Enter new address: ");
                         address = scanner.nextLine();
-                        person.address = address;
+                        contact.address = address;
                         System.out.println("Contact updated");
                     }
                     case 2 -> {
                         System.out.println("Enter new city: ");
                         city = scanner.nextLine();
-                        person.city = city;
+                        contact.city = city;
                         System.out.println("Contact updated");
                     }
                     case 3 -> {
                         System.out.println("Enter new state: ");
                         state = scanner.nextLine();
-                        person.state = state;
+                        contact.state = state;
                         System.out.println("Contact updated");
                     }
                     case 4 -> {
                         System.out.println("Enter new zip: ");
                         zip = scanner.nextLine();
-                        person.zip = zip;
+                        contact.zip = zip;
                         System.out.println("Contact updated");
                     }
                     case 5 -> {
                         System.out.println("Enter new phone number: ");
                         phoneNumber = scanner.nextLine();
-                        person.phoneNumber = phoneNumber;
+                        contact.phoneNumber = phoneNumber;
                         System.out.println("Contact updated");
                     }
                     default -> System.out.println("Invalid input");
@@ -152,29 +152,29 @@ public class AddressBookManager implements IAddressBook{
 
     public void deletePerson() {
         for (int i = 0; i < contacts.size(); i++) {
-            person = contacts.get(i);
+            contact = contacts.get(i);
             System.out.println("Enter first name: ");
             firstName = scanner.nextLine();
             System.out.println("Enter last name: ");
             lastName = scanner.nextLine();
-            if (firstName.equals(person.firstName) && lastName.equals(person.lastName)) {
+            if (firstName.equals(contact.firstName) && lastName.equals(contact.lastName)) {
                 contacts.remove(i);
                 System.out.println("Contact deleted");
             }
-            if(firstName.equals(person.firstName) && lastName.equals(person.lastName))
+            if(firstName.equals(contact.firstName) && lastName.equals(contact.lastName))
                 System.out.println("Contact does not exist");
         }
     }
 
     public void sortAlphabetically() {
-        Comparator<Person> sortingNameList = (person1 , person2) -> {
+        Comparator<Contact> sortingNameList = (person1 , person2) -> {
             if(person1.firstName.compareTo(person2.firstName) == 0)
                 return person1.lastName.compareTo(person2.lastName);
             else
                 return person1.firstName.compareTo(person2.firstName);
         };
-        List<Person> sortedNames = contacts.stream().sorted(sortingNameList).collect(Collectors.toList());
-        for(Person person : sortedNames) person.display();
+        List<Contact> sortedNames = contacts.stream().sorted(sortingNameList).collect(Collectors.toList());
+        for(Contact contact : sortedNames) contact.display();
     }
 
     public void sortByCityStateZip() {
@@ -189,21 +189,21 @@ public class AddressBookManager implements IAddressBook{
     }
 
     public void sortingByCity() {
-        Comparator<Person> sortingNameList = (person1 , person2) -> person1.city.compareTo(person2.city);
-        List<Person> sortedNames = contacts.stream().sorted(sortingNameList).collect(Collectors.toList());
-        for(Person person : sortedNames) person.display();
+        Comparator<Contact> sortingNameList = (person1 , person2) -> person1.city.compareTo(person2.city);
+        List<Contact> sortedNames = contacts.stream().sorted(sortingNameList).collect(Collectors.toList());
+        for(Contact contact : sortedNames) contact.display();
     }
 
     public void sortingByState() {
-        Comparator<Person> sortingNameList = (person1 , person2) -> person1.state.compareTo(person2.state);
-        List<Person> sortedNames = contacts.stream().sorted(sortingNameList).collect(Collectors.toList());
-        for(Person person : sortedNames) person.display();
+        Comparator<Contact> sortingNameList = (person1 , person2) -> person1.state.compareTo(person2.state);
+        List<Contact> sortedNames = contacts.stream().sorted(sortingNameList).collect(Collectors.toList());
+        for(Contact contact : sortedNames) contact.display();
     }
 
     public void sortingByZip() {
-        Comparator<Person> sortingNameList = Comparator.comparing(person2 -> person2.zip);
-        List<Person> sortedNames = contacts.stream().sorted(sortingNameList).collect(Collectors.toList());
-        for(Person person : sortedNames) person.display();
+        Comparator<Contact> sortingNameList = Comparator.comparing(person2 -> person2.zip);
+        List<Contact> sortedNames = contacts.stream().sorted(sortingNameList).collect(Collectors.toList());
+        for(Contact contact : sortedNames) contact.display();
     }
 
     public void viewPersonByCityOrState() {
@@ -219,12 +219,12 @@ public class AddressBookManager implements IAddressBook{
             case 1 -> {
                 System.out.println("Enter city: ");
                 city = scanner.nextLine();
-                for (Map.Entry<Person, String> person : cityPersonMap.entrySet()) {
+                for (Map.Entry<Contact, String> person : cityPersonMap.entrySet()) {
                     if (Objects.equals(city, person.getValue())) keys.add(person.getKey());
                 }
-                for (Person personData : keys)
-                    if (firstName.equals(personData.firstName) && lastName.equals(personData.lastName) && city.equals(personData.city)) {
-                        personData.display();
+                for (Contact contactData : keys)
+                    if (firstName.equals(contactData.firstName) && lastName.equals(contactData.lastName) && city.equals(contactData.city)) {
+                        contactData.display();
                         personExists = true;
                     }
                 if (!personExists) System.out.println("Contact does not exist");
@@ -232,11 +232,11 @@ public class AddressBookManager implements IAddressBook{
             case 2 -> {
                 System.out.println("Enter state: ");
                 state = scanner.nextLine();
-                for (Map.Entry<Person, String> person : statePersonMap.entrySet())
+                for (Map.Entry<Contact, String> person : statePersonMap.entrySet())
                     if (Objects.equals(state, person.getValue())) keys.add(person.getKey());
-                for (Person personData : keys) {
-                    if (firstName.equals(personData.firstName) && lastName.equals(personData.lastName) && state.equals(personData.state)) {
-                        personData.display();
+                for (Contact contactData : keys) {
+                    if (firstName.equals(contactData.firstName) && lastName.equals(contactData.lastName) && state.equals(contactData.state)) {
+                        contactData.display();
                         personExists = true;
                     }
                 }
@@ -265,9 +265,9 @@ public class AddressBookManager implements IAddressBook{
         }
     }
 
-    public void viewPeople(String cityOrState, HashMap<Person, String> personHashMap) {
+    public void viewPeople(String cityOrState, HashMap<Contact, String> personHashMap) {
         keys.clear();
-        for (Map.Entry<Person, String> person : personHashMap.entrySet())
+        for (Map.Entry<Contact, String> person : personHashMap.entrySet())
             if (Objects.equals(cityOrState, person.getValue())) {
                 keys.add(person.getKey());
                 person.getKey().display();
@@ -296,7 +296,7 @@ public class AddressBookManager implements IAddressBook{
             FileWriter fileWriter = new FileWriter(file);
             CSVWriter csvWriter = new CSVWriter(fileWriter);
             List<String[]> data = new ArrayList<>();
-            for(Person person : contacts) data.add(new String[]{person.firstName, person.lastName, person.address, person.city, person.state, person.phoneNumber, person.zip});
+            for(Contact contact : contacts) data.add(new String[]{contact.firstName, contact.lastName, contact.address, contact.city, contact.state, contact.phoneNumber, contact.zip});
             csvWriter.writeAll(data);
             csvWriter.close();
         }
@@ -333,8 +333,8 @@ public class AddressBookManager implements IAddressBook{
         Path filePath = Paths.get("C:\\Users\\My PC\\Desktop\\Shravya" + addressBookName + ".json");
         Gson gson = new Gson();
         BufferedReader bufferedReader = new BufferedReader(new FileReader(String.valueOf(filePath)));
-        Person[] person = gson.fromJson(bufferedReader, Person[].class);
-        for (Person contact : person) {
+        Contact[] contacts = gson.fromJson(bufferedReader, Contact[].class);
+        for (Contact contact : contacts) {
             System.out.println("Firstname : " + contact.firstName);
             System.out.println("Lastname : " + contact.lastName);
             System.out.println("Address : " + contact.address);
