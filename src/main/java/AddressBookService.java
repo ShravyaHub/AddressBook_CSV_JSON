@@ -89,7 +89,7 @@ public class AddressBookService {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException interruptedException) {
-
+                throw new AddressBookException(interruptedException.getMessage(), AddressBookException.ExceptionType.CANNOT_EXECUTE_QUERY)
             }
         }
         System.out.println(contactsList);
