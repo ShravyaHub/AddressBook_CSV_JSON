@@ -43,12 +43,17 @@ public class AddressBookJSONTest {
     }
 
     @Test
-    public void givenEmployeePayrollData_WhenUpdated_ShouldValidateRequestResponseReceived() throws AddressBookException {
+    public void givenAddressBookData_WhenUpdated_ShouldValidateRequestResponseReceived() throws AddressBookException {
         try {
             assertEquals(200, new AddressBookService().updatePersonDataInJSONServer(3, 959126665));
         } catch (AddressBookException addressBookException) {
             throw new AddressBookException("Cannot connect to JSON server", AddressBookException.ExceptionType.CONNECTION_FAIL);
         }
+    }
+
+    @Test
+    public void givenAddressBookData_WhenDeleted_ShouldValidateRequestResponseReceived() {
+        assertEquals(200, new AddressBookService().deleteContactFromJSONServer(2));
     }
 
 }

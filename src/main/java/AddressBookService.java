@@ -151,4 +151,13 @@ public class AddressBookService {
         return response.getStatusCode();
     }
 
+    public int deleteContactFromJSONServer(int id) {
+        JSONObject request = new JSONObject();
+        Response response = given().
+                body(request.toString()).
+                when().
+                delete("http://localhost:3000/person/" + id);
+        return response.getStatusCode();
+    }
+
 }
