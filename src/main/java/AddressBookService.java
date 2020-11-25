@@ -1,7 +1,15 @@
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static io.restassured.RestAssured.given;
 
 public class AddressBookService {
 
@@ -87,4 +95,34 @@ public class AddressBookService {
         System.out.println(contactsList);
         return new AddressBookService().readData().size();
     }
+
+    public int addPersonToJSONServer(int id, String firstName, String lastName, String address, String city, String state, int zip, int phoneNumber, String email) throws AddressBookException {
+        try {
+            RestAssured.baseURI = "http://localhost:3000";
+            RequestSpecification request = given();
+            JSONObject requestParams = new JSONObject();
+            requestParams.put("id", id);
+            requestParams.put("firstName", firstName);
+            requestParams.put("lastName", lastName);
+            requestParams.put("address", address);
+            requestParams.put("city", city);
+            requestParams.put("state", state);
+            requestParams.put("zip", zip);
+            requestParams.put("phoneNumber", phoneNumber);
+            requestParams.put("email", email);
+            request.header("Content-Type", "application/json");
+            request.body(requestParams.toString());
+            Response response = request.post("/person");
+            return response.getStatusCode();
+        } catch (JSONException jsonException) {
+            throw new AddressBookException(jsonException.getMessage(), AddressBookException.ExceptionType.CONNECTION_FAIL);
+        }
+    }
+
+    public int getDataFromJSONServer() {
+        Response response = RestAssured.get("http://localhost:3000/person");
+        System.out.println(response.getBody().asString());
+        return response.getStatusCode();
+    }
+
 }
