@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +90,7 @@ public class AddressBookService {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException interruptedException) {
-                throw new AddressBookException(interruptedException.getMessage(), AddressBookException.ExceptionType.CANNOT_EXECUTE_QUERY)
+                throw new AddressBookException(interruptedException.getMessage(), AddressBookException.ExceptionType.CANNOT_EXECUTE_QUERY);
             }
         }
         System.out.println(contactsList);
@@ -123,6 +124,17 @@ public class AddressBookService {
         Response response = RestAssured.get("http://localhost:3000/person");
         System.out.println(response.getBody().asString());
         return response.getStatusCode();
+    }
+
+    public List<Integer> addMultiplePeopleToJSONServer(List<Person> addressBookDataList) throws AddressBookException {
+        try {
+            List<Integer> statusCode = new ArrayList<>();
+            for (int index = 0; index < addressBookDataList.size(); index++)
+                statusCode.add(this.addPersonToJSONServer(addressBookDataList.get(index).id, addressBookDataList.get(index).firstName, addressBookDataList.get(index).lastName, addressBookDataList.get(index).address, addressBookDataList.get(index).city, addressBookDataList.get(index).state, addressBookDataList.get(index).zip, Math.toIntExact(addressBookDataList.get(index).phoneNumber), addressBookDataList.get(index).email));
+            return statusCode;
+        } catch (AddressBookException addressBookException) {
+            throw new AddressBookException("Cannot connect to JSON server", AddressBookException.ExceptionType.CONNECTION_FAIL);
+        }
     }
 
 }
