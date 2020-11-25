@@ -1,8 +1,11 @@
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
 public class AddressBookJSONTest {
@@ -36,6 +39,15 @@ public class AddressBookJSONTest {
         } catch (AddressBookException addressBookException) {
             throw new AddressBookException("Cannot connect to JSON server", AddressBookException.ExceptionType.CONNECTION_FAIL);
 
+        }
+    }
+
+    @Test
+    public void givenEmployeePayrollData_WhenUpdated_ShouldValidateRequestResponseReceived() throws AddressBookException {
+        try {
+            assertEquals(200, new AddressBookService().updatePersonDataInJSONServer(3, 959126665));
+        } catch (AddressBookException addressBookException) {
+            throw new AddressBookException("Cannot connect to JSON server", AddressBookException.ExceptionType.CONNECTION_FAIL);
         }
     }
 

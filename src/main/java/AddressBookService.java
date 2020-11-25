@@ -137,4 +137,18 @@ public class AddressBookService {
         }
     }
 
+    public int updatePersonDataInJSONServer(int id, long phoneNumber) throws AddressBookException {
+        String requestBody = "{\n\"phoneNumber\": \"" + phoneNumber + "\" \n}";
+        RestAssured.baseURI = "http://localhost:3000";
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .when()
+                .patch("/person/" + id)
+                .then()
+                .extract().response();
+        return response.getStatusCode();
+    }
+
 }
